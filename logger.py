@@ -38,3 +38,29 @@ def print_data():
     with open('data_second_variant.csv', 'r', encoding='utf-8') as f:
         data_second = f.readlines()
         print(*data_second)
+
+def modify_data():
+    variant = int(input(f'В каком файле изменить данные? 1 или 2? Выберите вариант:'))
+    while variant != 1 and variant != 2:
+        print('Неправильный ввод!')
+        variant = int(input('Выберите вариант: '))
+    if variant == 1:
+        print("Выберите номер записи для изменения:")
+        with open('data_first_variant.csv', 'r', encoding='utf-8') as f:
+            data_first = f.readlines()
+            for idx, line in enumerate(data_first):
+                if line.strip():
+                    print(f"{idx + 1}: {line.strip()}")
+        record_number = int(input("Введите номер записи: ")) - 1
+        name = input("Введите новое имя: ")
+        surname = input("Введите новую фамилию: ")
+        phone = input("Введите новый номер телефона: ")
+        address = input("Введите новый адрес: ")
+        with open('data_first_variant.csv', 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+        lines[record_number * 5] = name + '\n'
+        lines[record_number * 5 + 1] = surname + '\n'
+        lines[record_number * 5 + 2] = phone + '\n'
+        lines[record_number * 5 + 3] = address + '\n'
+        with open('data_first_variant.csv', 'w', encoding='utf-8') as f:
+            f.writelines(lines)
