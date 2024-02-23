@@ -52,15 +52,17 @@ def modify_data():
                 if line.strip():
                     print(f"{idx + 1}: {line.strip()}")
         record_number = int(input("Введите номер записи: ")) - 1
-        name = input("Введите новое имя: ")
-        surname = input("Введите новую фамилию: ")
-        phone = input("Введите новый номер телефона: ")
-        address = input("Введите новый адрес: ")
+        if record_number < 0 or record_number >= len(data_first) / 5:
+            print("Неправильный номер записи!")
+            record_number = int(input("Введите номер записи: ")) - 1
+        start_index = record_number * 5
+        print("Выбранная запись для изменения:")
+        for i in range(start_index, start_index + 4):
+            print(data_first[i].strip())
+        field_choice = int(input("Введите номер поля для изменения (1 - имя, 2 - фамилия, 3 - номер телефона, 4 - адрес): "))
+        new_value = input("Введите новое значение: ")
         with open('data_first_variant.csv', 'r', encoding='utf-8') as f:
             lines = f.readlines()
-        lines[record_number * 5] = name + '\n'
-        lines[record_number * 5 + 1] = surname + '\n'
-        lines[record_number * 5 + 2] = phone + '\n'
-        lines[record_number * 5 + 3] = address + '\n'
+        lines[start_index + field_choice - 1] = new_value + '\n'
         with open('data_first_variant.csv', 'w', encoding='utf-8') as f:
             f.writelines(lines)
