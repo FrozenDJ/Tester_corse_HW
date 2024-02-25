@@ -81,3 +81,38 @@ def modify_data():
         data[start_index] = ';'.join(entry) + '\n'
     with open(file_name, 'w', encoding='utf-8') as f:
         f.writelines(data)
+
+def delete_data():
+    variant = int(input('В каком файле удалить данные? 1 или 2? Выберите вариант: '))
+    while variant not in [1, 2]:
+        print('Неправильный ввод!')
+        variant = int(input('Выберите вариант: '))
+    file_name = 'data_first_variant.csv' if variant == 1 else 'data_second_variant.csv'
+    try:
+        with open(file_name, 'r', encoding='utf-8') as f:
+            data = f.readlines()
+    except FileNotFoundError:
+        print('Файл не найден!')
+        return
+    if variant == 1:
+        print('Выберите номер записи для удаления:')
+        for idx in range(0, len(data), 5):
+            print(f"{idx // 5 + 1}: {data[idx].strip()}")
+        record_number = int(input("Введите номер записи: ")) - 1
+        if record_number < 0 or record_number >= len(data) / 5:
+            print("Неправильный номер записи!")
+            record_number = int(input("Введите номер записи: ")) - 1
+        start_index = record_number * 5
+        del data[start_index: start_index + 5]
+    else:
+        print('Выберите номер записи для удаления:')
+        for idx, line in enumerate(data):
+            print(f"{idx + 1}: {line.strip()}")
+        record_number = int(input("Введите номер записи: ")) - 1
+        if record_number < 0 or record_number >= len(data):
+            print("Неправильный номер записи!")
+            record_number = int(input("Введите номер записи: ")) - 1
+        del data[record_number]
+    with open(file_name, 'w', encoding='utf-8') as f:
+        f.writelines(data)
+    print('Запись успешно удалена.')
